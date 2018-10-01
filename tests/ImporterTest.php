@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-include dirname(__FILE__) . '/../lib/importer.php';
+include_once dirname(__FILE__) . '/../lib/importer.php';
 
 class ImporterTest extends TestCase {
 

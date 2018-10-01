@@ -31,6 +31,10 @@ class R46Product {
         return true;
     }
 
+    /**
+     * @param string $value
+     * @throws R46InvalidAttributeFormat
+     */
     public function setId($value) {
         if (!is_string($value) && !is_numeric($value)) {
             throw new R46InvalidAttributeFormat('Id should be a string or numeric');
@@ -39,6 +43,10 @@ class R46Product {
         $this->id = $value;
     }
 
+    /**
+     * @param string $value
+     * @throws R46InvalidAttributeFormat
+     */
     public function setName($value) {
         if (is_numeric($value)) {
             throw new R46InvalidAttributeFormat('Name should be a string');
@@ -47,6 +55,10 @@ class R46Product {
         $this->name = $value;
     }
 
+    /**
+     * @param float $value
+     * @throws R46InvalidAttributeFormat
+     */
     public function setPrice($value) {
         if (!is_float($value) && !is_numeric($value)) {
             throw new R46InvalidAttributeFormat('Price should be numeric');
@@ -55,6 +67,10 @@ class R46Product {
         $this->price = $value;
     }
 
+    /**
+     * @param string $value
+     * @throws R46InvalidAttributeFormat
+     */
     public function setCurrency($value) {
         if (!is_string($value)) {
             throw new R46InvalidAttributeFormat('Currency should be a string');
@@ -63,6 +79,10 @@ class R46Product {
         $this->currency = $value;
     }
 
+    /**
+     * @param string $value
+     * @throws R46InvalidAttributeFormat
+     */
     public function setURL($value) {
         if (!is_string($value) || substr($value,0,4) !== "http") {
             throw new R46InvalidAttributeFormat('URL should be valid');
@@ -71,6 +91,10 @@ class R46Product {
         $this->url = $value;
     }
 
+    /**
+     * @param string $value
+     * @throws R46InvalidAttributeFormat
+     */
     public function setPicture($value) {
         if (!is_string($value) || substr($value,0,4) !== "http") {
             throw new R46InvalidAttributeFormat('Picture should be a valid URL');
@@ -79,6 +103,10 @@ class R46Product {
         $this->picture = $value;
     }
 
+    /**
+     * @param boolean $value
+     * @throws R46InvalidAttributeFormat
+     */
     public function setAvailable($value) {
         if (!is_bool($value)) {
             throw new R46InvalidAttributeFormat('Available should be boolean');
@@ -87,6 +115,10 @@ class R46Product {
         $this->available = $value;
     }
 
+    /**
+     * @param string[] $value
+     * @throws R46InvalidAttributeFormat
+     */
     public function setCategories($value) {
         if (!is_array($value)) {
             throw new R46InvalidAttributeFormat('Categories should be an array of strings');
@@ -95,6 +127,10 @@ class R46Product {
         $this->categories = $value;
     }
 
+    /**
+     * @param string $value
+     * @throws R46InvalidAttributeFormat
+     */
     public function setFashionGender($value) {
         if (!in_array($value, ['f', 'm'])) {
             throw new R46InvalidAttributeFormat('Gender should be only f, m, or undefined');
@@ -103,6 +139,10 @@ class R46Product {
         $this->fashion_gender = $value;
     }
 
+    /**
+     * @param mixed[] $value
+     * @throws R46InvalidAttributeFormat
+     */
     public function setFashionSizes($value) {
         if (!is_array($value)) {
             throw new R46InvalidAttributeFormat('Fashion_size should be an array');
@@ -124,6 +164,10 @@ class R46Product {
         $this->fashion_sizes = $value;
     }
 
+    /**
+     * @param string $value
+     * @throws R46InvalidAttributeFormat
+     */
     public function setFashionType($value) {
         $allowed_fashion_types = ['shoe', 'shirt', 'tshirt', 'underwear', 'trouser', 'jacket', 'blazer', 'sock', 'belt', 'hat', 'glove'];
         if (!in_array($value, $allowed_fashion_types)) {
@@ -133,6 +177,10 @@ class R46Product {
         $this->fashion_type = $value;
     }
 
+    /**
+     * @param string $value
+     * @throws R46InvalidAttributeFormat
+     */
     public function setFashionFeature($value) {
         $allowed_fashion_features = ['pregnant'];
         if (!in_array($value, $allowed_fashion_features)) {
