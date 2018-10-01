@@ -13,3 +13,6 @@ Additional information:
 PHP install on Centos:
 https://www.tecmint.com/install-php-5-6-on-centos-7/
 
+Tests:
+1. Install phpunit https://phpunit.de/getting-started/phpunit-4.html
+2. Run `phpunit tests`

@@ -11,6 +11,11 @@ class R46Product {
     protected $available;
     protected $categories;
 
+    protected $fashion_gender;
+    protected $fashion_sizes;
+    protected $fashion_type;
+    protected $fashion_feature;
+
     protected $required_fields = ['id', 'name', 'price', 'currency', 'url', 'picture', 'available', 'categories'];
 
     public function validate() {
@@ -19,6 +24,10 @@ class R46Product {
                 throw new R46Exception('Required field ' . $f . ' is not set.');
             }
         }
+        if ( (count($this->fashion_sizes) > 0) && is_null($this->fashion_type) ) {
+            throw new R46RequiredParameterMissing('Fashion_type is required while fashion_sizes are not empty');
+        }
+        $this->debug('Product id ' . $this->id . ' is valid');
         return true;
     }
 
@@ -84,6 +93,63 @@ class R46Product {
         }
         $this->debug('Set categories: ' . implode(',', $value));
         $this->categories = $value;
+    }
+
+    public function setFashionGender($value) {
+        if (!in_array($value, ['f', 'm'])) {
+            throw new R46InvalidAttributeFormat('Gender should be only f, m, or undefined');
+        }
+        $this->debug('Set fashion_gender: ' . $value);
+        $this->fashion_gender = $value;
+    }
+
+    public function setFashionSizes($value) {
+        if (!is_array($value)) {
+            throw new R46InvalidAttributeFormat('Fashion_size should be an array');
+        }
+        foreach ($value as $size) {
+            if ( is_null($size) ) { continue; } # null is allowed
+            if (is_numeric($size)) { continue; } # only digits are allowed
+            if ( in_array(substr($size, 0, 1), ['r', 'e', 'u', 'b'] ) ) { # allow sizes begins with these symbols
+                if (is_numeric(substr($size, 1))) { continue; } # and contains only digits
+            }
+            if ( in_array($size, ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']) ) { continue; } # allow US sizes
+            if ( substr($size, 0, 1) == 'h' ) {
+                if ( is_numeric( str_replace('-', '', substr($size, 1)) ) ) { continue; } # allow height format like 'h89-95'
+            }
+            # raise an error in other case
+            throw new R46InvalidAttributeFormat('Fashion_size ' . $size . ' is not correct, see the documentation');
+        }
+        $this->debug('Set fashion_sizes: [' . join(',', $value) . ']');
+        $this->fashion_sizes = $value;
+    }
+
+    public function setFashionType($value) {
+        $allowed_fashion_types = ['shoe', 'shirt', 'tshirt', 'underwear', 'trouser', 'jacket', 'blazer', 'sock', 'belt', 'hat', 'glove'];
+        if (!in_array($value, $allowed_fashion_types)) {
+            throw new R46InvalidAttributeFormat('Fashion_type should be in array [' . join(',', $allowed_fashion_types) . ']');
+        }
+        $this->debug('Set fashion_type: ' . $value);
+        $this->fashion_type = $value;
+    }
+
+    public function setFashionFeature($value) {
+        $allowed_fashion_features = ['pregnant'];
+        if (!in_array($value, $allowed_fashion_features)) {
+            throw new R46InvalidAttributeFormat('Fashion_features should be in array [' . join(',', $allowed_fashion_features) . ']');
+        }
+        $this->debug('Set fashion_feature: ' . $value);
+        $this->fashion_feature = $value;
+    }
+
+    public function is_niche($niche) {
+        switch ($niche) {
+            case 'fashion':
+                return ($this->fashion_type || $this->fashion_sizes || $this->fashion_gender || $this->fashion_feature);
+                break;
+            default:
+                return false;
+        }
     }
 
     public function get($attribute) {

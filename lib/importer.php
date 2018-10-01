@@ -32,6 +32,9 @@ class R46Importer
             ];
 
             $this->debug("Send " . count($items). " items...");
+            if (R46_DEBUG) {
+                print_r($data);
+            }
 
             $url = R46_BASE_URL . 'import/products';
             $ch = curl_init($url);
@@ -54,12 +57,12 @@ class R46Importer
     }
 
     protected function getProductsAsArray() {
-        /**
-         * @var $product R46Product
-         */
         $result = [];
         foreach ($this->products as $product) {
-            $result[] = [
+            /**
+             * @var $product R46Product
+             */
+            $item = [
                 'id' => $product->get('id'),
                 'name' => $product->get('name'),
                 'price' => $product->get('price'),
@@ -67,8 +70,17 @@ class R46Importer
                 'url' => $product->get('url'),
                 'picture' => $product->get('picture'),
                 'available' => $product->get('available'),
-                'categories' => $product->get('categories')
+                'categories' => $product->get('categories'),
             ];
+            if ($product->is_niche('fashion')) {
+                $item['fashion'] = [
+                    'gender'  => $product->get('fashion_gender'),
+                    'sizes'   => $product->get('fashion_sizes'),
+                    'type'    => $product->get('fashion_type'),
+                    'feature' => $product->get('fashion_feature'),
+                ];
+            }
+            $result[] = $item;
         }
         return $result;
     }

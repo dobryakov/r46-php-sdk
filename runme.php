@@ -34,4 +34,18 @@ $product->setPicture('http://www.yandex.ru/logo.jpg');
 $product->setAvailable(true);
 $product->setCategories(['CCC']);
 
+$product = $importer->newProduct();
+$product->setId(4);
+$product->setName('Футболка');
+$product->setPrice(rand(10,30));
+$product->setCurrency('RUR');
+$product->setURL('http://www.yandex.ru/');
+$product->setPicture('http://www.yandex.ru/logo.jpg');
+$product->setAvailable(true);
+$product->setCategories(['XXX']);
+$product->setFashionType('shirt');
+$product->setFashionFeature('pregnant');
+$product->setFashionGender('f');
+$product->setFashionSizes(['r44', 44]);
+
 $importer->sendProducts();
