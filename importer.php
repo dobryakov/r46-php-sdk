@@ -19,39 +19,47 @@ class R46Importer
 
     public function sendProducts()
     {
+        /**
+         * @var $product R46Product
+         */
         foreach ($this->products as $product) {
-            if ($product->is_valid()) {
-                $this->debug('Send product ' . $product->get('id') . ' ' . $product->get('name'));
+            $product->validate();
+        }
 
-                $data = [
-                    'shop_id' => R46_SHOP_ID,
-                    'shop_secret' => R46_SHOP_SECRET,
-                    'items' => $this->getProductsAsArray()
-                ];
+        foreach (array_chunk($this->getProductsAsArray(), 1000) as $items) {
+            $data = [
+                'shop_id'       => R46_SHOP_ID,
+                'shop_secret'   => R46_SHOP_SECRET,
+                'items'         => $items
+            ];
 
-                $url = R46_BASE_URL . 'import/products';
-                $ch = curl_init($url);
-                $header = "Content-Type: application/json";
-                curl_setopt($ch, CURLOPT_VERBOSE, 1);
-                curl_setopt($ch, CURLOPT_URL, $url);
-                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($ch, CURLOPT_HTTPHEADER, array($header));
-                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-                $returned = curl_exec($ch);
+            $this->debug("Send " . count($items). " items...");
 
-                if (curl_error($ch)) {
-                    print curl_error($ch);
-                } else {
-                    print 'ret: ' . $returned;
-                }
+            $url = R46_BASE_URL . 'import/products';
+            $ch = curl_init($url);
+            $header = "Content-Type: application/json";
+            curl_setopt($ch, CURLOPT_VERBOSE, R46_DEBUG ? 1 : 0);
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array($header));
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+            $returned = curl_exec($ch);
 
+            if (curl_error($ch)) {
+                print curl_error($ch);
+            } else {
+                #print 'API returns: ' . $returned;
             }
         }
+
     }
 
     protected function getProductsAsArray()
     {
+        /**
+         * @var $product R46Product
+         */
         $result = [];
         foreach ($this->products as $product) {
             $result[] = [

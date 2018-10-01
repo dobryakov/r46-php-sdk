@@ -27,7 +27,7 @@ $product->setCategories(['AAA', 'BBB']);
 $product = $importer->newProduct();
 $product->setId(3);
 $product->setName('Фонарик');
-$product->setPrice(300);
+$product->setPrice(rand(1000,3000));
 $product->setCurrency('RUR');
 $product->setURL('http://www.yandex.ru/');
 $product->setPicture('http://www.yandex.ru/logo.jpg');

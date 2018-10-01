@@ -13,7 +13,7 @@ class R46Product {
 
     protected $required_fields = ['id', 'name', 'price', 'currency', 'url', 'picture', 'available', 'categories'];
 
-    public function is_valid() {
+    public function validate() {
         foreach ($this->required_fields as $f) {
             if (is_null($this->$f)) {
                 throw new R46Exception('Required field ' . $f . ' is not set.');
