@@ -1,24 +1,22 @@
 <?php
 
-include_once 'config.php';
-include_once 'product.php';
-include_once 'exception.php';
+include_once dirname(__FILE__) . '/config.php';
+include_once dirname(__FILE__) . '/product.php';
+include_once dirname(__FILE__) . '/exception.php';
 
 class R46Importer
 {
 
     protected $products = [];
 
-    public function newProduct()
-    {
+    public function newProduct() {
         $p = new R46Product();
         $this->products[] = $p;
         $this->debug('Create new product');
         return $p;
     }
 
-    public function sendProducts()
-    {
+    public function sendProducts() {
         /**
          * @var $product R46Product
          */
@@ -55,8 +53,7 @@ class R46Importer
 
     }
 
-    protected function getProductsAsArray()
-    {
+    protected function getProductsAsArray() {
         /**
          * @var $product R46Product
          */
@@ -76,8 +73,7 @@ class R46Importer
         return $result;
     }
 
-    protected function debug($str)
-    {
+    protected function debug($str) {
         echo('R46 DEBUG: ' . $str . "\n");
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-include_once 'importer.php';
+include_once 'lib/importer.php';
 
 $importer = new R46Importer();
 
